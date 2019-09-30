@@ -1,0 +1,4 @@
+/data/1/appgcb/bin/app_data_clean/static_hql/ct_mkt_account.hql
+/data/1/appgcb/bin/app_data_clean/static_hql/ct_mkt_account_stg.hql
+/data/1/appgcb/bin/app_data_clean/static_hql/ct_mkt_trxn_trade.hql
+/data/1/appgcb/bin/app_data_clean/static_hql/ct_mkt_trxn_trade_stg.hql

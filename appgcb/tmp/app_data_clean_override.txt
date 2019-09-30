@@ -1,0 +1,3 @@
+prc_run_dt=2019-01-01
+prc_start_dt=2019-01-01
+app_data_clean|prc_l1_trxn_ld|app_data_clean_trade_trxn_ld_stg|1|/data/1/appgcb/tmp/gen_hive_tbl_ld.sh|/data/1/appgcb/tmp/gcb_clean_trxn_trade_ld.hql|Y

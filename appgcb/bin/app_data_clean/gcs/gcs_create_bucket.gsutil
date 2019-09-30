@@ -1,0 +1,5 @@
+
+gsutil mb -c regional -l us-central1  gs://app_gcb_inbound/
+gsutil mb -c regional -l us-central1  gs://app_gcb_outbound/
+gsutil mb -c regional -l us-central1 gs://app_gcb_data
+gsutil mb -c regional -l us-central1 gs://app_gcb_code

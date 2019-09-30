@@ -1,0 +1,13 @@
+app_data_clean|l1_gcb_trxn||prc_l1_trxn_ld|app_data_clean_trxn_ld_app_start|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/prccntrl/hql|ct_app_prc_run_cntl_stg_ld.hql||2019-07-26
+app_data_clean|l1_gcb_trxn||prc_l1_trxn_ld|app_data_clean_trxn_ld_prc_start|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/prccntrl/hql|ct_app_prc_run_cntl_stg_ld.hql||2019-07-26
+app_data_clean|l1_gcb_trxn|trade_execution|prc_l1_trxn_ld|app_data_clean_trade_trxn_ld_stg|1|/data/1/appgcb/bin/wrapper|gen_hive_query_exec.sh|/data/1/appgcb/bin/app_data_clean/hql|gcb_clean_trxn_trade_ld.hql||2019-07-26
+app_data_clean|l1_gcb_trxn|trade_execution|prc_l1_trxn_ld|app_data_clean_trade_trxn_ld_stg|2|/data/1/appgcb/bin/wrapper|gen_hive_query_exec.sh|/data/1/appgcb/bin/app_data_clean/hql|gcb_clean_trxn_trade_ld.hql||2019-07-26
+app_data_clean|l1_gcb_trxn||prc_l1_trxn_ld|app_data_clean_trxn_ld_prc_complete|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/prccntrl/hql|ct_app_prc_run_cntl_stg_ld.hql||2019-07-26
+app_data_clean|l1_gcb_trxn||prc_l1_trxn_ld|app_data_clean_trxn_ld_prc_cntrl_load|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/prccntrl/hql|ct_app_prc_run_cntl_ld.hql||2019-07-26
+app_data_clean|l1_gcb_trxn||prc_l1_trxn_ld|app_data_clean_trxn_ld_app_complete|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/prccntrl/hql|ct_app_prc_run_cntl_stg_ld.hql||2019-07-26
+app_gcb_dw|app_gcb_stg||prc_l2_src_ld|app_gcb_dw_l2_src_ld_app_start|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/wrapper|||2019-07-26
+app_gcb_dw|app_gcb_stg||prc_l2_src_ld|app_gcb_dw_l2_src_ld_prc_start|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/wrapper|||2019-07-26
+app_gcb_dw|app_gcb_stg|sampleTbl2|prc_l2_src_ld|app_gcb_dw_l2_sampletbl2_ld|1|/data/1/appgcb/bin/wrapper|gen_hive_query_exec.sh|/data/1/appgcb/bin/app_data_clean/hql|gcb_clean_trxn_trade_ld.hql||2019-07-26
+app_gcb_dw|app_gcb_stg||prc_l2_src_ld|app_gcb_dw_l2_src_ld_prc_complete|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/wrapper|||2019-07-26
+app_gcb_dw|app_gcb_stg||prc_l2_src_ld|app_gcb_dw_l2_src_ld_prc_cntrl_load|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/wrapper|||2019-07-26
+app_gcb_dw|app_gcb_stg||prc_l2_src_ld|app_gcb_dw_l2_src_ld_app_complete|1|/data/1/appgcb/bin/wrapper|gen_app_batch_start_close.sh|/data/1/appgcb/bin/wrapper|||2019-07-26

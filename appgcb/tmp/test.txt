@@ -1,0 +1,306 @@
+x='app_batch_start.sh'
+y=`echo $x |cut -d "." -f1`
+https://www.golinuxcloud.com/run-shell-scripts-in-parallel-collect-exit-status-process/
+run_dt=$(date -d 2019/02/03 +"%Y-%m-%d")
+
+param_file=
+hive -f "${line}" --hivevar param_file=${param_file}
+ssh -p 1111 cloudera@localhost
+
+
+cat >/data/1/appgcb/tmp/app_data_clean_override.txt
+prc_run_dt=2019-07-01
+prc_start_dt=2019-02-01
+rm /data/1/appgcb/tmp/app_data_clean_override.txt
+
+cat /data/1/appgcb/tmp/app_job_detl_prc_l1_trxn_ld_20190809052741.txt |grep app_data_clean_trade_trxn_ld_stg | awk -f "|" {print $3}  == "rahmu"'
+cat /data/1/appgcb/tmp/app_job_detl_prc_l1_trxn_ld_20190809052741.txt |grep app_data_clean_trade_trxn_ld_stg |awk -F  '|' '$4 == "1"' | cut -d"|" -f6
+
+
+fl_nm=/data/1/appgcb/logs/app_data_clean_prc_l1_trxn_ld_stg_status_20190809052741.txt
+prc_job_name=app_data_clean_trade_trxn_ld_stg
+prc_job_seq="prc_job_seq=2"
+x="prc_job_seq=2"
+prc_job_status=`cat  ${fl_nm} | grep -w ${prc_job_name}| awk -F  '|' '$3 ==  "prc_job_seq=2"' | cut -d"|" -f6|cut -d"=" -f2 | tail -1`
+prc_job_status=`cat  /data/1/appgcb/logs/app_data_clean_prc_l1_trxn_ld_stg_status_20190809052741.txt | grep -w app_data_clean_trade_trxn_ld_stg| awk -v prc_job_seq="$prc_job_seq" -F  '|' '$3 == $prc_job_seq' | cut -d"|" -f6|cut -d"=" -f2 | tail -1`
+
+cat  /data/1/appgcb/logs/app_data_clean_prc_l1_trxn_ld_stg_status_20190809052741.txt | grep -w app_data_clean_trade_trxn_ld_stg|
+
+fl_nm="/data/1/appgcb/tmp/app_job_detl_prc_l1_trxn_ld_20190809091350.txt"
+prc_job_name="app_data_clean_trade_trxn_ld_stg"
+prc_job_seq=2
+job_rerun_fl=`cat  ${fl_nm} | grep -w ${prc_job_name}|  awk -v prc_job_seq="$prc_job_seq" -F"|"  '$3 == prc_job_seq  '`
+job_rerun_fl=`cat  ${fl_nm} | grep -w ${prc_job_name}|  awk -v prc_job_seq="$prc_job_seq" -F"|"  '$4 == prc_job_seq  { print $7; } '`
+
+var=`hive -S -e "select max(datekey) from ....;"`
+select prc_name,prc_start_dt,prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1
+
+export beeline_url=jdbc:hive2://quickstart.cloudera:10000/default
+prc_batch_detl=`beeline -u ${beeline_url}  -e "select prc_name,prc_start_dt,prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1"`
+
+export beeline_url=jdbc:hive2://quickstart.cloudera:10000/default
+hive_verbose=false
+hive_header=false
+hive_var_file="/data/1/appgcb/tmp/app_data_clean_hive_var_file.hql"
+beeline -u ${beeline_url} -f hive_source_test.hql --hiveconf hive_var_file="app_data_clean_hive_var_file.hql"
+
+hive -f hive_source_test.hql --hiveconf schema=$myschema
+
+hive -f "/root/local_bdp/posts/Pass-variables-from-shell-script-to-hive-script/daily_audit.hql"
+-i "/root/local_bdp/posts/Pass-variables-from-shell-script-to-hive-script/hiveparam.txt"
+
+fnGetCurrDate() {
+curr_date=`date +${date_format}`
+echo "${curr_date}"
+}
+#cycle c
+fnGetMaxRunDate() {
+executable="$1"
+log_file="$2"
+run_date=$3
+export beeline_url=jdbc:hive2://quickstart.cloudera:10000/default
+hive_verbose=false
+hive_header=false
+query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+
+prc_name=prc_l1_trxn_ld
+
+query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+
+query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+
+query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from
+(select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+field_Delim="~"
+
+if [ batch_freq == 'D' ]  then
+		query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from (select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+elif [ batch_freq == 'W' ] then
+		query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,7) as prc_run_dt from (select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+elif [ batch_freq == 'BW' ] then
+		query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,case when (dayofmonth(date_add(prc_start_dt,1))==1) then date_add(prc_start_dt,15) else last_day(date_add(prc_start_dt,1)) end as prc_run_dt from (select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from app_gcb_stg.app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+elif [ batch_freq == 'M' ] then
+		query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,last_day(date_add(prc_start_dt,1)) as prc_run_dt from (select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from app_gcb_stg.app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+else
+	  query="NOTFOUND"
+fl_nm="/data/1/appgcb/tmp/hive_env_var.hql"
+prc_run_id=10000
+prc_start_dt=2019-01-01
+prc_run_dt=2019-05-01
+echo "set hivevar:prc_run_id=${prc_run_id}" >>${fl_nm}
+echo "set hivevar:prc_start_dt=${prc_start_dt}" >>${fl_nm}
+echo "set hivevar:prc_run_dt=${prc_run_dt}" >>${fl_nm}
+cat /data/1/appgcb/config/hive_env_var.hql >>${fl_nm}
+
+/data/1/appgcb/config/dev_env.hql
+prc_l1_trxn_ld_param_file.txt
+fi
+if [ $batch_freq == 'D' ]
+then
+   query='x'
+elif [ $batch_freq == 'W' ]
+then
+   query='Y'
+else
+	  query="NOTFOUND"
+fi
+
+select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from (select prc_name,prc_start_dt,prc_run_dt,row_number()
+over (partition by 1 order by prc_run_id desc,prc_exec_time desc)
+as rnk from app_gcb_stg.app_prc_run_cntrl where prc_name=prc_l1_trxn_ld and prc_run_status='\''PRC_COMPLETED'\'') inq where rnk=1'
+
+
+select day(prc_start_dt) as dayxx,dayofmonth(prc_start_dt) as dayxx,prc_start_dt from app_gcb_stg.app_prc_run_cntrl
+where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED'
+
+
+select prc_name,date_add(prc_start_dt,1) as prc_start_dt,last_day(date_add(prc_start_dt,1)) as prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1
+
+select prc_name,date_add(prc_start_dt,1) as prc_start_dt,case when (dayofmonth(date_add(prc_start_dt,1))==1) then date_add(prc_start_dt,15)
+else last_day(date_add(prc_start_dt,1)) end as prc_run_dt from (
+select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+app_gcb_stg.app_prc_run_cntrl where prc_name='prc_l1_trxn_ld' and prc_run_status='PRC_COMPLETED') inq where rnk=1
+
+hdfs dfs -ls  hdfs://quickstart.cloudera:8020/user/hive/app_gcb_data/app_gcb_stg/
+hdfs dfs -rm  hdfs://quickstart.cloudera:8020/user/hive/app_gcb_data/app_gcb_stg/app_prc_run_cntrl_stg/prc_name=prc_l1_trxn_ld/*
+
+if [ batch_freq == 'D' ]  then
+		query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,1) as prc_run_dt from (
+		select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+		app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+elif [ batch_freq == 'W' ] then
+		query="select prc_name,date_add(prc_start_dt,1) as prc_start_dt,date_add(prc_start_dt,7) as prc_run_dt from (
+		select prc_name,prc_start_dt,prc_run_dt,row_number() over (partition by 1 order by prc_run_id desc,prc_exec_time desc) as rnk from
+		app_gcb_stg.app_prc_run_cntrl where prc_name=${prc_name} and prc_run_status='PRC_COMPLETED') inq where rnk=1"
+
+else
+   echo "sanjeeb"
+fi
+
+
+prev_run_dt=`beeline --silent='$hive_verbose' --showHeader=${hive_header} --outputformat=dsv --delimiterForDSV=${field_Delim} -u ${beeline_url} -e "${query}"`
+
+if [[ -z ${run_date} ]] ; then
+
+	prev_run_dt=`beeline --silent='$hive_verbose' --showHeader=${hive_header} --outputformat=dsv --delimiterForDSV=${field_Delim} -u ${beeline_url} -e "SELECT max(run_date)  FROM ${schema}.${proc_ctrl_tbl} WHERE TRIM(UPPER(executable))=TRIM(UPPER('${executable}')) and TRIM(UPPER(DESCRIPTION))='BATCH_CYCLE_CLOSE' and TRIM(UPPER(action))='SUCCESS' LIMIT 1 "` 2>&1 >> "${LOG_DIR}/${log_file}"
+	echo "${prev_run_dt}"
+else
+	prev_run_dt=`beeline --silent='$hive_verbose' --showHeader=${hive_header} --outputformat=dsv --delimiterForDSV=${field_Delim} -u ${beeline_url} -e "SELECT max(run_date)  FROM ${schema}.${proc_ctrl_tbl} WHERE TRIM(UPPER(executable))=TRIM(UPPER('${executable}')) and TRIM(UPPER(DESCRIPTION))='BATCH_CYCLE_CLOSE' and TRIM(UPPER(action))='SUCCESS' and run_date < '${run_date}' LIMIT 1 "` 2>&1 >> "${LOG_DIR}/${log_file}"
+	echo "${prev_run_dt}"
+
+fi
+}
+
+fl_detl=
+msg="$2"
+log_fl="$3"
+
+fnFileExist() {
+	fl_detl="$1"
+	if [ -f ${fl_detl} ] ; then
+		echo " Passed"
+	else
+    echo " failed"
+	fi
+}
+fnFileExist
+
+import os.path
+from os import path
+colList=['app_id','prc_name','prc_job_name','prc_job_seq','wrapper_file_detl','code_file_detl','rerun_flag']
+
+if path.exists("/data/1/appgcb/tmp/app_data_clean_override.txt"):
+
+pd_df_override_fl= pd.read_csv("/data/1/appgcb/tmp/app_data_clean_override.txt",sep="|",header=None,skiprows=range(0, 2),names=colList)
+
+cat  ${fl_nm} | grep -w ${prc_job_name}|awk -v prc_job_seq="$prc_job_seq" -F"|"  '$3 == prc_job_seq  { print $6; } '| tail -1| awk -F"=" '{ print $2; }'
+cat  /data/1/appgcb/logs/app_data_clean_prc_l1_trxn_ld_stg_status_20190809052741.txt | grep -w app_data_clean_trade_trxn_ld_stg|awk -v prc_job_seq="$prc_job_seq" -F"|"  '$3 == prc_job_seq  { print $6; } '| tail -1| awk -F"=" '{ print $2; }'
+line=/data/1/appgcb/bin/app_gcb_dw/prccntrl/hql/ct_app_prc_run_cntl_stg_ld.hql
+param_file=/data/1/appgcb/bin/app_gcb_dw/prccntrl/hql/param_file.hql
+env_file=/data/1/appgcb/tmp/app_gcb_dw_param.hql
+beeline_url=jdbc:hive2://quickstart.cloudera:10000/default
+	beeline -u ${beeline_url}  -e "select count(1) as rec_cnt from ${schema_tbl} where source_dt='${source_dt}' ;" >> "${LOG_FILE}"
+beeline -u ${beeline_url} -e "select prc_run_status from app_gcb_stg.app_prc_run_cntrl where prc_run_id=20190729173520 and prc_name='prc_l1_trxn_ld' and prc_job_name='app_data_clean_trade_trxn_ld_stg' ;"
+
+insert into table app_prc_run_cntrl_stg partition (app_id)
+select
+20190727122732 as prc_run_id,
+db_name,tbl_name,prc_job_name,prc_seq, "2019-02-01" as prc_start_dt,"2019-02-01" as prc_run_dt,"COMPLETED" as prc_run_status,
+date_format(CURRENT_TIMESTAMP,'yyyy-MM-dd:hh:mm:ss') as prc_exec_time,app_id
+from app_gcb_stg.app_job_detl where trim(app_id)= "app_data_clean" and trim(prc_job_name)="l2_appgcb_dw_src_ld_batch_start"
+
+for i in arr; do
+  tmp=$(printf "$i")
+  arr2+="$tmp\n" # <--- here we preserve the new line!
+done
+
+fnGetStartRunDtval='prc_start_dt=2019-01-01|prc_run_dt=2019-01-01'
+x1=`echo $fnGetStartRunDtval | cut -d"|" -f1`
+fl_detl=app_data_clean_prc_l1_trxn_ld_stg_status_20190802185942.txt
+x1=`cat  $fl_detl | grep app_data_clean_trxn_ld_batch_complete| cut -d"|" -f5|cut -d"=" -f2 | tail -1`
+
+fl_detl=app_job_detl_prc_l1_trxn_ld_20190802201541.txt
+x1=`cat  $fl_detl | grep app_data_clean_trxn_ld_batch_complete| cut -d"|" -f7`
+
+fl_nm=/data/1/appgcb/logs/app_data_clean_prc_l1_trxn_ld_stg_status_20190803184641.txt
+prc_job_name=app_data_clean_trade_trxn_ld_stg
+job_rerun_fl=`cat  ${fl_nm} | grep ${prc_job_name}| cut -d"|" -f7`
+declare -a arr=("prc_start_dt" "prc_run_dt" )
+fl_detl=app_data_clean_override.txt
+fl_detl=/data/1/appgcb/tmp/app_data_clean_override.txt
+val1=`grep prc_start_dt "$fl_detl"`
+
+A="$($override_date_array | cut -d'|' -f2)"
+
+A=`$override_date_array | cut -d'|' -f2`
+
+A=`echo $override_date_array |cut -d'|' -f2`
+
+tmp_file=$(mktemp /data/1/appgcb/logs/test.txt)
+for scripts in /data/1/appgcb/logs/test.txt; do
+   sh $scripts &
+   PID="$!"
+   echo "$PID:$scripts" >> $tmp_file
+   PID_LIST+="$PID "
+done
+fl_nm=app_job_detl_prc_l1_trxn_ld_20190805174538.txt
+prc_job_name=app_data_clean_trade_trxn_ld_stg
+job_wrapper_detl=`cat  ${fl_nm} | grep app_data_clean_trade_trxn_ld_stg| cut -d"|" -f 4-6` >> temp.txt
+echo $job_wrapper_detl
+cat  app_job_detl_prc_l1_trxn_ld_20190806122853.txt | grep app_data_clean_trade_trxn_ld_stg| cut -d"|" -f 4-6 >> temp.txt
+
+fl_nm=app_job_detl_prc_l1_trxn_ld_20190805174538.txt
+prc_job_name=app_data_clean_trade_trxn_ld_stg
+fl_nm=app_job_detl_prc_l1_trxn_ld_20190805174538.txt
+prc_job_name=app_data_clean_trade_trxn_ld_stg
+cat  ${fl_nm} | grep ${prc_job_name}| cut -d"|" -f 4-6 >> temp.txt
+
+for scripts in /data/1/appgcb/logs/test.txt; do
+echo ${scripts}
+done
+
+filename='/data/1/appgcb/tmp/temp.txt'
+filelines=`cat $filename`
+echo Start
+for line in $filelines ; do
+    echo $line
+    prc_seq=`echo  ${line} | cut -d"|" -f1`
+    getJobWrapperDetlVal=`echo  ${line} |  cut -d"|" -f2`
+    getJobCodeFileDetlVal=`echo  ${line} | cut -d"|" -f3`
+    echo "$prc_seq"
+    echo "$getJobWrapperDetlVal"
+    echo "$getJobCodeFileDetlVal"
+    app_id=app_data_clean
+    prc_name=prc_l1_trxn_ld
+    prc_job_name=app_data_clean_trade_trxn_ld_stg
+    exe_env=dev
+    echo "sh -x "${getJobWrapperDetlVal}" ${app_id} ${prc_name} ${prc_job_name} ${prc_seq} "${getJobCodeFileDetlVal}" ${exe_env} &"
+    sh -x "${getJobWrapperDetlVal}" ${app_id} ${prc_name} ${prc_job_name} ${prc_seq} "${getJobCodeFileDetlVal}" ${exe_env} &
+done
+
+fnPrcStatusFileAppend  ${PRC_STG_STATUS_FILE} ${prc_run_id}  ${prc_job_name} ${prc_seq} ${prc_start_dt} ${prc_run_dt} ${prc_run_status} ${LOG_FILE}
+
+for detl in /data/1/appgcb/tmp/temp.txt; do
+   echo ${detl}
+done
+
+for detl in /data/1/appgcb/tmp/temp.txt; do
+    getJobWrapperDetlVal=`echo  ${detl} | grep ${prc_job_name}| cut -d"|" -f 1`
+    echo "$getJobWrapperDetlVal"
+    getJobCodeFileDetlVal=`cat  ${detl} | grep ${prc_job_name}| cut -d"|" -f 3`
+    prc_seq=`cat  ${fl_nm} | grep ${prc_job_name}| cut -d"|" -f 2`
+    echo "$getJobWrapperDetlVal"
+    echo "$getJobCodeFileDetlVal"
+    echo "$prc_seq"
+    app_id=app_data_clean
+    prc_name=prc_l1_trxn_ld
+    prc_job_name=app_data_clean_trade_trxn_ld_stg
+    exe_env=dev
+    sh -x ${getJobWrapperDetlVal} ${app_id} ${prc_name} ${prc_job_name} ${prc_seq} "${getJobCodeFileDetlVal}" ${exe_env} &
+
+select
+prc_run_id,app_id,
+db_name,tbl_name,prc_job_name,prc_seq, prc_start_dt,prc_run_dt,prc_run_status,
+prc_exec_time,prc_name
+from app_gcb_stg.app_prc_run_cntrl_stg where trim(app_id)= "app_data_clean" and trim(prc_name)="prc_l1_trxn_ld"
+union all
+select
+prc_run_id,app_id,
+db_name,tbl_name,"app_data_clean_trxn_ld_prc_cntrl_load" as prc_job_name,1 as prc_seq, prc_start_dt,prc_run_dt,"PRC_CNTRL_LOAD_COMPLETE" as prc_run_status,
+date_format(CURRENT_TIMESTAMP,'yyyy-MM-dd:hh:mm:ss') as prc_exec_time ,prc_name
+from app_gcb_stg.app_prc_run_cntrl_stg where trim(app_id)= "app_data_clean" and trim(prc_name)="prc_l1_trxn_ld" limit 1
+
+x=`cat app_data_clean_prc_l1_trxn_ld_stg_status_20190730060214.txt | grep 'prc_run_id=20190730060214' | grep 'prc_job_name=app_data_clean_trxn_ld_batch_start' | awk -F  '|' '{ print $5}'|awk -F  '=' '{ print $2}'`

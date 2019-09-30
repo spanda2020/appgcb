@@ -1,0 +1,6 @@
+/data/1/appgcb/bin/app_data_clean/static_hql/create_db_l1_gcb_ref.hql
+/data/1/appgcb/bin/app_data_clean/static_hql/create_db_l1_gcb_trxn.hql
+/data/1/appgcb/bin/app_data_clean/static_hql/create_db_l1_gcb_ref_stg.hql
+/data/1/appgcb/bin/app_data_clean/static_hql/create_db_l1_gcb_trxn_stg.hql
+/data/1/appgcb/bin/app_gcb_dw/static_hql/create_db_app_gcb_dw.hql
+/data/1/appgcb/bin/app_gcb_dw/static_hql/create_db_app_gcb_stg.hql
